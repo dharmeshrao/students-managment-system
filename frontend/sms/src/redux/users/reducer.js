@@ -5,7 +5,7 @@ const initState = {
   error: false,
 };
 
-const userReducer = (state = initState, { type, payload }) => {
+export const userReducer = (state = initState, { type, payload }) => {
   switch (type) {
     case ADD_USER_LOADING:
       return {

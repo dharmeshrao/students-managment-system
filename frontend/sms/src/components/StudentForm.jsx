@@ -1,9 +1,15 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { DropdownButton, Dropdown ,ButtonGroup } from "react-bootstrap";
+import { DropdownButton, Dropdown, ButtonGroup } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { addUserError, addUserLoading, addUserSuccess } from "../redux/users/action";
+import axios from "axios";
 const Style = styled.div`
   /* box-shadow: 0px 2px 5px #aaa9a9; */
-  margin-top: 50px;
+  margin-top: 30px;
+  h2{
+    text-align: center;
+  }
   .form {
     width: 80%;
     margin: auto;
@@ -23,12 +29,17 @@ const Style = styled.div`
       border-bottom: 1px solid gray;
       :active {
         outline: none;
+        background-color: white;
       }
       ::placeholder {
         font-size: 16px;
       }
       :focus {
         outline: none;
+        background-color: white;
+      }
+      ::after {
+        background-color: white;
       }
     }
   }
@@ -69,6 +80,7 @@ const Style = styled.div`
   }
 `;
 export const StudentForm = () => {
+  const dispatch = useDispatch();
   const [data, setData] = useState({
     name: "",
     city: "",
@@ -77,6 +89,8 @@ export const StudentForm = () => {
     contact: "",
     qualification: "",
     type: "",
+    password: "abc@123",
+    email: "",
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -85,11 +99,19 @@ export const StudentForm = () => {
       [name]: value,
     });
   };
-  const handleAddStudent = () => {
-    console.log(data);
+  const handleAddStudent = async () => {
+    dispatch(addUserLoading());
+    try {
+      const newData = await axios.post("http://localhost:5000/register", data);
+      dispatch(addUserSuccess(newData.data.user))
+    } catch (err) {
+      alert(err)
+      dispatch(addUserError(err));
+    }
   };
   return (
     <Style>
+      <h2>Add users here</h2>
       <div className="form">
         <label htmlFor="#">Name:</label>
         <input
@@ -97,6 +119,13 @@ export const StudentForm = () => {
           type="text"
           placeholder="Enter Name"
           name="name"
+        />
+        <label htmlFor="#">Email:</label>
+        <input
+          onChange={handleChange}
+          type="text"
+          name="email"
+          placeholder="Enter Email"
         />
         <label htmlFor="#">City:</label>
         <input
@@ -126,56 +155,91 @@ export const StudentForm = () => {
           id={`dropdown-variants-Secondary`}
           title="Gender"
         >
-          <Dropdown.Item onClick={()=>{
-            setData({
-              ...data,
-              gender: "Male"
-            })
-          }} value="Dhar" eventKey="1">Male</Dropdown.Item>
-          <Dropdown.Item onClick={()=>{
-            setData({
-              ...data,
-              gender: "Female"
-            })
-          }} eventKey="2">Female</Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              setData({
+                ...data,
+                gender: "Male",
+              });
+            }}
+            value="Dhar"
+            eventKey="1"
+          >
+            Male
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              setData({
+                ...data,
+                gender: "Female",
+              });
+            }}
+            eventKey="2"
+          >
+            Female
+          </Dropdown.Item>
         </DropdownButton>
         <DropdownButton
           as={ButtonGroup}
           id={`dropdown-variants-Secondary`}
           title="Type"
         >
-          <Dropdown.Item onClick={()=>{
-            setData({
-              ...data,
-              type: "Admin"
-            })
-          }} value="Dhar" eventKey="1">Admin</Dropdown.Item>
-          <Dropdown.Item onClick={()=>{
-            setData({
-              ...data,
-              type: "Student"
-            })
-          }} eventKey="2">Student</Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              setData({
+                ...data,
+                type: "Admin",
+              });
+            }}
+            value="Dhar"
+            eventKey="1"
+          >
+            Admin
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              setData({
+                ...data,
+                type: "Student",
+              });
+            }}
+            eventKey="2"
+          >
+            Student
+          </Dropdown.Item>
         </DropdownButton>
         <DropdownButton
           as={ButtonGroup}
           id={`dropdown-variants-Secondary`}
           title="Qualification"
         >
-          <Dropdown.Item onClick={()=>{
-            setData({
-              ...data,
-              qualification: "Graduate"
-            })
-          }} value="Dhar" eventKey="1">Graduate</Dropdown.Item>
-          <Dropdown.Item onClick={()=>{
-            setData({
-              ...data,
-              qualification: "Postgraduate"
-            })
-          }} eventKey="2">Post Graduate</Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              setData({
+                ...data,
+                qualification: "Graduate",
+              });
+            }}
+            value="Dhar"
+            eventKey="1"
+          >
+            Graduate
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              setData({
+                ...data,
+                qualification: "Postgraduate",
+              });
+            }}
+            eventKey="2"
+          >
+            Post Graduate
+          </Dropdown.Item>
         </DropdownButton>
-        <button className="button" onClick={handleAddStudent}>Add</button>
+        <button className="button" onClick={handleAddStudent}>
+          Add
+        </button>
       </div>
     </Style>
   );
