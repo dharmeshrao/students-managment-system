@@ -9,7 +9,7 @@ export const NavbarHeader = () => {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto"></Nav>
             <Nav>
-              <Nav.Link href="#deets">Created by Dharmesh</Nav.Link>
+              <Nav.Link >Created by Dharmesh</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

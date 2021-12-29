@@ -1,9 +1,11 @@
+import axios from "axios";
+import { useState } from "react";
 import styled from "styled-components";
 
 const Style = styled.div`
   width: 40%;
   padding:30px;
-  height: 300px;
+  height: 380px;
   border-radius: 4px;
   margin:auto;
   margin-top: 50px;
@@ -11,6 +13,13 @@ const Style = styled.div`
   display: flex;
   flex-direction: column;
   gap:10px;
+  h2{
+    text-align: center;
+  }
+  label{
+    font-weight: 700;
+    font-size: 16px;
+  }
   input {
       border: none;
       padding: 8px;
@@ -39,12 +48,30 @@ const Style = styled.div`
 `;
 
 export const Login = () => {
+  const [data,setData] = useState({
+    email:"",
+    password:""
+  })
+  const handleChange = (e)=>{
+    const {name,value} = e.target;
+    setData({
+      ...data,
+      [name]: value
+    })
+  }
+  const handleLogin = async ()=>{
+  const Data = await axios.post('http://localhost:5000/login',data)
+  console.log(Data);
+  }
+
   return (
     <Style>
         <h2>Login here</h2>
-      <input name="email" placeholder="Enter your email" type="text" />
-      <input type="text" name="password" placeholder="Enter your password" />
-      <button>Login</button>
+      <label htmlFor="#">Email</label>
+      <input onChange={handleChange} name="email" placeholder="Enter your email" type="text" />
+      <label htmlFor="#">Password</label>
+      <input type="text" name="password" onChange={handleChange} placeholder="Enter your password" />
+      <button onClick={handleLogin}>Login</button>
     </Style>
   );
 };
