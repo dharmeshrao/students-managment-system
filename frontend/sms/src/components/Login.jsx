@@ -1,6 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Redirect } from "react-router-dom";
 import styled from "styled-components";
+import {
+  getAuthError,
+  getAuthloading,
+  getAuthSucess,
+} from "../redux/auth/action";
 const Style = styled.div`
   width: 40%;
   padding: 30px;
@@ -51,6 +58,7 @@ export const Login = () => {
     email: "",
     password: "",
   });
+  const dispatch = useDispatch();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({
@@ -59,9 +67,18 @@ export const Login = () => {
     });
   };
   const handleLogin = async () => {
-    const Data = await axios.post("http://localhost:5000/login", data);
-    console.log(Data)
+    dispatch(getAuthloading());
+    try {
+      const Data = await axios.post("http://localhost:5000/login", data);
+      dispatch(getAuthSucess(Data.data));
+    } catch (err) {
+      dispatch(getAuthError(err));
+    }
   };
+  let token = JSON.parse(localStorage.getItem("acess_token_sms"));
+  if (token.token) {
+    return <Redirect to="/contest"></Redirect>;
+  }
   return (
     <Style>
       <h2>Login here</h2>

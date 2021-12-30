@@ -19,7 +19,7 @@ const Style = styled.div`
 `;
 
 export const StudentsList = () => {
-  const { user, loading, error } = useSelector((store) => store);
+  const { user, loading, error } = useSelector((store) => store.user);
   const dispatch = useDispatch();
   useEffect(async () => {
     dispatch(getUserLoading());
