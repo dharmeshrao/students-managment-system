@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import styled from "styled-components";
@@ -76,7 +77,9 @@ export const Login = () => {
     }
   };
   let token = JSON.parse(localStorage.getItem("acess_token_sms"));
-  if (token.token) {
+  let store = useSelector((store)=>store.auth)
+  console.log(store);
+  if (store.token || token) {
     return <Redirect to="/contest"></Redirect>;
   }
   return (

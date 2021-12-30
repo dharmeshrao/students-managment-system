@@ -15,10 +15,10 @@ export default function App() {
           <Login />
         </Route>
         <Private path="/users">
-          <MainRoute/>
+          <MainRoute />
         </Private>
         <Private path="/contest">
-          <Contest/>
+          <Contest />
         </Private>
         <Route>...404 error No page found</Route>
       </Switch>
