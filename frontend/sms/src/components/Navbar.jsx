@@ -1,22 +1,52 @@
-import { useContext } from "react";
-import { useEffect, useState } from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { TokenContext } from "../context/TokenContext";
-const Style = styled.div``;
+export const NavbarHeader = ({ handleDelete }) => {
+  const store = useSelector((store) => store.auth);
+  if (!store.token) {
+    return (
+      <div style={{ boxShadow: "0px 2px 4px #aaa9a9" }}>
+        <Navbar collapseOnSelect expand="lg" bg="danger" variant="dark">
+          <Container>
+            <Navbar.Brand href="#home">Masai School</Navbar.Brand>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav className="me-auto"></Nav>
+              <Nav>
+                <Link style={{ textDecoration: "none", color: "white" }} to="#">
+                  Created by Dharmesh
+                </Link>
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+      </div>
+    );
+  }
 
-export const NavbarHeader = () => {
-  const handleLogout = () => {
-    handleToken(false);
-    localStorage.setItem("acess_token_sms", JSON.stringify(null));
-  };
-  const { handleToken, token } = useContext(TokenContext);
-  useEffect(() => {
-    if (JSON.parse(localStorage.getItem("acess_token_sms")) === null) {
-      handleToken(false);
-    } else handleToken(true);
-  }, [handleLogout]);
+  if (!store.token.user.admin) {
+    return (
+      <div style={{ boxShadow: "0px 2px 4px #aaa9a9" }}>
+        <Navbar collapseOnSelect expand="lg" bg="danger" variant="dark">
+          <Container>
+            <Navbar.Brand href="#home">Masai School</Navbar.Brand>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav className="me-auto"></Nav>
+              <Nav onClick={handleDelete}>
+                <Link
+                  style={{ textDecoration: "none", color: "white" }}
+                  to="/login"
+                >
+                  Logout
+                </Link>
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+      </div>
+    );
+  }
 
   return (
     <div style={{ boxShadow: "0px 2px 4px #aaa9a9" }}>
@@ -26,15 +56,29 @@ export const NavbarHeader = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto"></Nav>
-            <Link to="/users">
-              <Nav>Users</Nav>
-            </Link>
-            <Link to="/contest">
-              <Nav>Contests</Nav>
-            </Link>
-            <Link to="/">
-              <Nav onClick={handleLogout}>{token ? "Logout" : "Dharmesh"}</Nav>
-            </Link>
+            <div style={{ display: "flex", gap: "10px" }}>
+              <Nav>
+                <Link
+                  style={{ textDecoration: "none", color: "white" }}
+                  to="/users"
+                >
+                  Users
+                </Link>
+              </Nav>
+              <Nav>
+                <Link style={{ textDecoration: "none", color: "white" }} to="/">
+                  Contests
+                </Link>
+              </Nav>
+              <Nav onClick={handleDelete}>
+                <Link
+                  style={{ textDecoration: "none", color: "white" }}
+                  to="/login"
+                >
+                  Logout
+                </Link>
+              </Nav>
+            </div>
           </Navbar.Collapse>
         </Container>
       </Navbar>

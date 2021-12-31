@@ -2,6 +2,7 @@ import {
   ADD_USER_ERROR,
   ADD_USER_LOADING,
   ADD_USER_SUCCESS,
+  DELETEUSER,
   GET_USER_ERROR,
   GET_USER_LOADING,
   GET_USER_SUCCESS,
@@ -20,3 +21,4 @@ export const getUserSuccess = (payload) => ({
   payload,
 });
 export const getUserError = (payload) => ({ type: GET_USER_ERROR, payload });
+export const deleteUser = (payload)=> ({type: DELETEUSER,payload})

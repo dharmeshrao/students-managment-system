@@ -1,18 +1,17 @@
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { Table, Button } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { AddContest } from "./AddContest";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import {
-  deleteContest,
   getCONTESTError,
   getCONTESTLoading,
   getCONTESTSuccess,
 } from "../redux/contest/action";
 import axios from "axios";
-export const Contest = () => {
-  let { auth, contest } = useSelector((store) => store);
+export const PublicContest = () => {
+  let { contest, auth } = useSelector((store) => store);
   const dispatch = useDispatch();
   useEffect(async () => {
     dispatch(getCONTESTLoading());
@@ -26,17 +25,24 @@ export const Contest = () => {
   if (!auth.token) {
     return <Redirect to="/login" />;
   }
-  if (!auth.token.user.admin) {
-    return <Redirect to="/contest" />;
-  }
+
+  if (auth.token.user.admin) return <Redirect to="/" />;
   return contest.loading ? (
     <div>loading....</div>
   ) : contest.error ? (
     <div>error...</div>
   ) : (
     <>
-      <AddContest />
       <div style={{ width: "90%", margin: "auto" }}>
+        <h2
+          style={{
+            textAlign: "center",
+            marginTop: "30px",
+            marginBottom: "20px",
+          }}
+        >
+          Contests
+        </h2>
         <Table responsive="sm">
           <thead>
             <tr>
@@ -46,10 +52,7 @@ export const Contest = () => {
               <th>Time</th>
               <th>Deadline</th>
               <th>Tags</th>
-              <th></th>
             </tr>
-          </thead>
-          <tbody>
             {contest.contest.map((e, i) => (
               <tr key={e._id}>
                 <td>{i + 1}</td>
@@ -58,21 +61,10 @@ export const Contest = () => {
                 <td>{e.time || ""}</td>
                 <td>{e.deadline || ""}</td>
                 <td>{e.tags || ""}</td>
-                <td>
-                  <Button
-                    onClick={async () => {
-                      dispatch(deleteContest(e._id));
-                      console.log(e._id, "hello");
-                      await axios.delete(`http://localhost:5000/contests/${e._id}`)
-                    }}
-                    variant="danger"
-                  >
-                    Delete
-                  </Button>
-                </td>
               </tr>
             ))}
-          </tbody>
+          </thead>
+          <tbody>{console.log(contest)}</tbody>
         </Table>
       </div>
     </>

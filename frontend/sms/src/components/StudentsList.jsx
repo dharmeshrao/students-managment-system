@@ -1,21 +1,21 @@
 import styled from "styled-components";
-import { Table } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
+  deleteUser,
   getUserError,
   getUserLoading,
   getUserSuccess,
 } from "../redux/users/action";
 import axios from "axios";
+import { deleteContest } from "../redux/contest/action";
 const Style = styled.div`
   width: 90%;
   margin: auto;
-  /* text-align: center; */
   margin-top: 50px;
   border-radius: 4px;
-  box-shadow: 0px 2px 5px #aaa9a9;
 `;
 
 export const StudentsList = () => {
@@ -47,13 +47,12 @@ export const StudentsList = () => {
             <th>Gender</th>
             <th>Contact</th>
             <th>Type</th>
-            <th>Edit</th>
           </tr>
         </thead>
         <tbody>
           {user.map((e, i) => (
             <tr key={e._id}>
-              <td>{i+1}</td>
+              <td>{i + 1}</td>
               <td>{e.name}</td>
               <td>{e.city}</td>
               <td>{e.age}</td>
@@ -61,7 +60,19 @@ export const StudentsList = () => {
               <td>{e.gender}</td>
               <td>{e.contact}</td>
               <td>{e.admin ? "Admin" : "Student"}</td>
-              <td>remove</td>
+              <td>
+                <Button
+                  onClick={async () => {
+                    dispatch(deleteUser(e._id));
+                    await axios.delete(
+                      `http://localhost:5000/users/${e._id}`
+                    );
+                  }}
+                  variant="danger"
+                >
+                  Delete
+                </Button>
+              </td>
             </tr>
           ))}
         </tbody>

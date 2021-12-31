@@ -2,12 +2,16 @@ import { useState } from "react";
 import styled from "styled-components";
 import { DropdownButton, Dropdown, ButtonGroup } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { addUserError, addUserLoading, addUserSuccess } from "../redux/users/action";
+import {
+  addUserError,
+  addUserLoading,
+  addUserSuccess,
+} from "../redux/users/action";
 import axios from "axios";
 const Style = styled.div`
   /* box-shadow: 0px 2px 5px #aaa9a9; */
   margin-top: 30px;
-  h2{
+  h2 {
     text-align: center;
   }
   .form {
@@ -103,9 +107,9 @@ export const StudentForm = () => {
     dispatch(addUserLoading());
     try {
       const newData = await axios.post("http://localhost:5000/register", data);
-      dispatch(addUserSuccess(newData.data.user))
+      dispatch(addUserSuccess(newData.data.user));
     } catch (err) {
-      alert(err)
+      alert(err);
       dispatch(addUserError(err));
     }
   };

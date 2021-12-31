@@ -1,3 +1,4 @@
+import { setLocalstorage, getLocalstorage } from "../../utils/localStorage";
 import { GETauthERROR, GETauthLOADING, GETauthSUCESS } from "./actiontype";
 const initState = {
   loading: false,
@@ -5,9 +6,6 @@ const initState = {
   error: false,
 };
 
-const Token = (data) => {
-  localStorage.setItem("acess_token_sms", JSON.stringify(data));
-};
 export const authReducer = (state = initState, { type, payload }) => {
   switch (type) {
     case GETauthLOADING:
@@ -15,16 +13,17 @@ export const authReducer = (state = initState, { type, payload }) => {
         ...state,
         loading: true,
       };
-    case GETauthSUCESS:
-      Token(payload);
+      case GETauthSUCESS:
+      setLocalstorage("acess_sms", payload);
       return {
         ...state,
         loading: false,
-        token: payload,
+        token: getLocalstorage("acess_sms"),
       };
     case GETauthERROR:
       return {
         ...state,
+        token: "",
         loading: false,
         error: true,
       };

@@ -1,4 +1,5 @@
-import { ADD_USER_ERROR, ADD_USER_LOADING, ADD_USER_SUCCESS, GET_USER_ERROR, GET_USER_LOADING, GET_USER_SUCCESS } from "./actionType";
+import { getLocalstorage } from "../../utils/localStorage";
+import { ADD_USER_ERROR, ADD_USER_LOADING, ADD_USER_SUCCESS, DELETEUSER, GET_USER_ERROR, GET_USER_LOADING, GET_USER_SUCCESS } from "./actionType";
 const initState = {
   loading: false,
   user: [],
@@ -6,6 +7,7 @@ const initState = {
 };
 
 export const userReducer = (state = initState, { type, payload }) => {
+  // getLocalstorage("acess_sms")
   switch (type) {
     case ADD_USER_LOADING:
       return {
@@ -48,7 +50,14 @@ export const userReducer = (state = initState, { type, payload }) => {
         loading:false,
         error:true
       };
-
+    case DELETEUSER:
+      let newData = state.user.filter((e) => {
+        return e._id !== payload;
+      });
+      return{
+        ...state,
+        user: newData
+      }
     default:
       return { ...state };
   }
