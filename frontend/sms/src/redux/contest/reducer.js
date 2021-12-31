@@ -6,6 +6,8 @@ import {
   GET_CONTEST_ERROR,
   GET_CONTEST_LOADING,
   GET_CONTEST_SUCCESS,
+  SORTDATE,
+  SORTDSA,
 } from "./actionType";
 const initState = {
   loading: false,
@@ -64,6 +66,24 @@ export const CONTESTReducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         contest: newData,
+      };
+    case SORTDSA:
+      let newData1 = state.contest.filter((e) => {
+        console.log(e)
+        return e.type === payload;
+      });
+      console.log(newData1,payload)
+      return {
+        ...state,
+        contest: newData1,
+      };
+    case SORTDATE:
+      let newData2 = state.contest.sort((a, b) => {
+        return a.deadline - b.deadline;
+      });
+      return {
+        ...state,
+        contest: newData2,
       };
     default:
       return { ...state };

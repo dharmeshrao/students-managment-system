@@ -6,6 +6,9 @@ import {
   GET_CONTEST_ERROR,
   GET_CONTEST_LOADING,
   GET_CONTEST_SUCCESS,
+  SORTCODING,
+  SORTDATE,
+  SORTDSA,
 } from "./actionType";
 
 export const addCONTESTLoading = () => ({ type: ADD_CONTEST_LOADING });
@@ -28,3 +31,5 @@ export const getCONTESTError = (payload) => ({
   payload,
 });
 export const deleteContest = (payload) => ({ type: DELETE_CONTEST, payload });
+export const  sortDate = ()=>({type:SORTDATE})
+export const  sortDSA = (payload)=>({type:SORTDSA,payload})

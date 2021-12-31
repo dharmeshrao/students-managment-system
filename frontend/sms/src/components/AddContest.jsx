@@ -85,6 +85,7 @@ const Style = styled.div`
   }
 `;
 export const AddContest = () => {
+
   const [data, setData] = useState({
     title: "",
     time: "",
@@ -135,7 +136,6 @@ export const AddContest = () => {
                 type: "DSA",
               });
             }}
-            value="Dhar"
             eventKey="1"
           >
             Dsa

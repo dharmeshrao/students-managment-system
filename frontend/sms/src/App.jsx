@@ -19,9 +19,7 @@ export default function App() {
   const [dummy, setDummy] = useState(false);
   const dispatch = useDispatch();
   const handleDelete = () => {
-    setTimeout(() => {
       setDummy(dummy ? false : true);
-    }, 500);
     localStorage.removeItem("acess_sms");
   };
   useEffect(() => {

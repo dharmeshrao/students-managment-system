@@ -10,7 +10,6 @@ import {
   getUserSuccess,
 } from "../redux/users/action";
 import axios from "axios";
-import { deleteContest } from "../redux/contest/action";
 const Style = styled.div`
   width: 90%;
   margin: auto;
