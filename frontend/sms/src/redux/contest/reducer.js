@@ -9,6 +9,7 @@ import {
   SORTDATE,
   SORTDSA,
 } from "./actionType";
+let oldData;
 const initState = {
   loading: false,
   contest: [],
@@ -16,7 +17,6 @@ const initState = {
 };
 
 export const CONTESTReducer = (state = initState, { type, payload }) => {
-  // getLocalstorage("acess_sms")
   switch (type) {
     case ADD_CONTEST_LOADING:
       return {
@@ -47,6 +47,7 @@ export const CONTESTReducer = (state = initState, { type, payload }) => {
       };
 
     case GET_CONTEST_SUCCESS:
+      oldData = payload;
       return {
         ...state,
         loading: false,
@@ -68,11 +69,9 @@ export const CONTESTReducer = (state = initState, { type, payload }) => {
         contest: newData,
       };
     case SORTDSA:
-      let newData1 = state.contest.filter((e) => {
-        console.log(e)
+      let newData1 = oldData.filter((e) => {
         return e.type === payload;
       });
-      console.log(newData1,payload)
       return {
         ...state,
         contest: newData1,
@@ -80,7 +79,7 @@ export const CONTESTReducer = (state = initState, { type, payload }) => {
     case SORTDATE:
       let newData2 = state.contest.sort((a, b) => {
         return a.deadline - b.deadline;
-      });
+      });newData2.reverse()
       return {
         ...state,
         contest: newData2,
